@@ -1,1 +1,10 @@
-<p>user-list works!</p>
+<div class="list-group">
+	<div *ngFor="let user of users" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+			 [class.active]="user.id === selectedUserId" (click)="onSelect(user.id)">
+		<span>
+			{{ user.name }}
+			<small class="text-muted ms-2">{{ user.lastTime | date:'shortTime' }}</small>
+		</span>
+		<span *ngIf="user.unread > 0" class="badge bg-success rounded-circle" style="min-width:24px;">{{ user.unread }}</span>
+	</div>
+</div>

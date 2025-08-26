@@ -40,6 +40,17 @@ export class AuthService {
     }
   }
 
+  getUserNameFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded.userName || decoded.name || null;
+    } catch {
+      return null;
+    }
+  }
+
   isLoggedIn(): boolean {
     return !!this.getToken();
   }

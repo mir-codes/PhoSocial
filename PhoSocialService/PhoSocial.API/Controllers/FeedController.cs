@@ -23,7 +23,7 @@ namespace PhoSocial.API.Controllers
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
 
-            string savedPath = null;
+            string? savedPath = null;
             if (dto.Image != null)
             {
                 var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
@@ -44,7 +44,7 @@ namespace PhoSocial.API.Controllers
                 Id = Guid.NewGuid(),
                 UserId = dto.UserId,
                 Caption = dto.Caption,
-                ImagePath = savedPath,
+                ImagePath = savedPath ?? string.Empty,
                 CreatedAt = DateTime.UtcNow
             };
 

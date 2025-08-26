@@ -15,7 +15,11 @@ export class UserSearchComponent {
   constructor(private search: SearchService) {}
 
   doSearch() {
-    if (!this.term.trim()) return;
+    if (!this.term.trim()) {
+      this.users = [];
+      this.error = '';
+      return;
+    }
     this.loading = true;
     this.search.users(this.term).subscribe({
       next: (res) => {

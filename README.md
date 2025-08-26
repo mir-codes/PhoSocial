@@ -58,7 +58,8 @@ PhoSocial/
 
 ---
 
-## 🌟 Features
+
+## 🌟 Features Implemented
 
 - **User Authentication:** Secure signup/login with JWT
 - **Feed:** View, like, and comment on posts
@@ -66,8 +67,30 @@ PhoSocial/
 - **Profile:** View and edit user info
 - **User Search:** Find users by name or email
 - **Chat:** Real-time messaging using SignalR
+- **Chat User List:** Shows recent chats, unread message count, and opens chat box per user
+- **Notification Sound:** Plays sound on new chat message
 - **Responsive Design:** Works beautifully on desktop and mobile
 - **Modern UI:** Clean, light, and friendly interface
+- **Session Gating:** Protected actions require login
+- **Commit/Build Checks:** GitHub Actions enforce commit message and build
+
+---
+
+## 📋 What This Application Should Do
+
+PhoSocial is a full-stack social media platform. It should:
+
+- Allow users to sign up, log in, and manage their profile
+- Let users create, view, like, and comment on photo posts
+- Support real-time chat between users, with unread message notifications and chat history
+- Provide a user search feature
+- Ensure all protected actions (like, comment, post, chat) require authentication
+- Display a modern, responsive UI for all features
+- Play a sound when a new chat message is received
+- Show a chat user list, ordered by recent activity, with unread counts
+- Enforce code quality and build checks via CI/CD
+
+If you need to analyze or fix a bug, refer to this section for expected behaviors and features.
 
 ---
 

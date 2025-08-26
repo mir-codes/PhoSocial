@@ -13,6 +13,7 @@
       <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/signup">Sign Up</a>
     </div>
     <div class="ms-auto d-flex align-items-center">
+      <span *ngIf="isLoggedIn" class="me-3 fw-bold text-primary">{{ userName }}</span>
       <form *ngIf="isLoggedIn" class="d-flex" (submit)="onSearch(search.value)">
         <input #search class="form-control form-control-sm me-2" placeholder="Search..." />
         <button class="btn btn-sm btn-outline-light" type="submit">Go</button>

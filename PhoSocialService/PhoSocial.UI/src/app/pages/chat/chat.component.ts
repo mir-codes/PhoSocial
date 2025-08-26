@@ -1,4 +1,5 @@
-﻿import { Component, OnDestroy, OnInit } from "@angular/core";
+﻿// ...existing code...
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ChatService } from "src/app/services/chat.service";
 import { AuthService } from "src/app/services/auth.service";
 import { ActivatedRoute } from '@angular/router';
@@ -17,8 +18,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   receiverId = '';
   receiverName = '';
   loading = true;
-  parallelQueue: (() => Promise<void>)[] = [];
-  running = false;
+  chatUsers: any[] = [];
+  selectedUserId = '';
+  chatUsersSub!: Subscription;
+  audio = new Audio('/assets/message.mp3');
 
   constructor(
     private chat: ChatService,
@@ -30,23 +33,15 @@ export class ChatComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.chat.start();
     this.sub = this.chat.messages$.subscribe(m => this.messages = m);
+    this.chatUsersSub = this.chat.chatUsers$.subscribe(users => this.chatUsers = users);
     this.route.queryParams.subscribe(params => {
       this.receiverId = params['userId'] || '';
       if (this.receiverId) {
+        this.selectedUserId = this.receiverId;
         this.loadReceiverName();
         this.loadHistory();
       }
     });
-    // Real-time receive
-    if (this.chat.hubConn) {
-      this.chat.hubConn.on('ReceiveMessage', (msg: any) => {
-        this.enqueue(() => this.handleIncomingMessage(msg));
-      });
-    }
-  }
-
-  ngOnDestroy() {
-    this.sub?.unsubscribe();
   }
 
   loadReceiverName() {
@@ -58,7 +53,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   loadHistory() {
     this.loading = true;
-    fetch(`/api/Chat/history/${this.receiverId}`, {
+    fetch(`/api/Chat/history/${this.selectedUserId}`, {
       headers: { 'Authorization': `Bearer ${this.auth.getToken()}` }
     })
       .then(res => res.json())
@@ -68,29 +63,25 @@ export class ChatComponent implements OnInit, OnDestroy {
           senderName: msg.senderName || msg.senderId
         }));
         this.loading = false;
+        // Reset unread count for this user
+        const user = this.chatUsers.find(u => u.id === this.selectedUserId);
+        if (user) user.unread = 0;
       })
       .catch(() => this.loading = false);
   }
 
   async send() {
-    if (!this.receiverId) return;
-    await this.chat.sendMessage(this.receiverId, this.text);
+    if (!this.selectedUserId) return;
+    await this.chat.sendMessage(this.selectedUserId, this.text);
     this.text = "";
+    this.loadHistory();
   }
 
-  enqueue(fn: () => Promise<void>) {
-    this.parallelQueue.push(fn);
-    this.runQueue();
-  }
-
-  async runQueue() {
-    if (this.running) return;
-    this.running = true;
-    while (this.parallelQueue.length) {
-      const fn = this.parallelQueue.shift();
-      if (fn) await fn();
-    }
-    this.running = false;
+  onSelectUser(id: string) {
+    this.selectedUserId = id;
+    this.receiverId = id;
+    this.loadReceiverName();
+    this.loadHistory();
   }
 
   async handleIncomingMessage(msg: any) {
@@ -98,5 +89,10 @@ export class ChatComponent implements OnInit, OnDestroy {
       ...msg,
       senderName: msg.senderName || msg.senderId
     }, ...this.messages];
+    this.audio.play();
+  }
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+    this.chatUsersSub?.unsubscribe();
   }
 }

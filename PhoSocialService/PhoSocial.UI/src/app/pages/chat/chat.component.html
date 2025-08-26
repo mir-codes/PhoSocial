@@ -1,17 +1,25 @@
-﻿<div class="chat-card card p-4 mb-3 mx-auto" style="max-width:500px;">
-  <h5 class="mb-3">Chat</h5>
-  <div *ngIf="loading">Loading chat history...</div>
-  <div *ngIf="!loading">
-  <div class="mb-2 text-muted" *ngIf="receiverId">Chatting with: {{ receiverName }}</div>
-    <div class="mb-3" style="max-height:300px;overflow-y:auto;">
-      <div *ngFor="let m of messages" class="border rounded p-2 mb-2 bg-light">
-        <strong>{{ m.senderName }}</strong>: {{ m.content }}
+﻿<audio id="msg-audio" src="/assets/message.mp3" preload="auto" style="display:none"></audio>
+<div class="row">
+  <div class="col-4">
+    <app-user-list [users]="chatUsers" [selectedUserId]="selectedUserId" (selectUser)="onSelectUser($event)"></app-user-list>
+  </div>
+  <div class="col-8">
+    <div class="chat-card card p-4 mb-3 mx-auto" style="max-width:500px;">
+      <h5 class="mb-3">Chat</h5>
+      <div *ngIf="loading">Loading chat history...</div>
+      <div *ngIf="!loading">
+        <div class="mb-2 text-muted" *ngIf="selectedUserId">Chatting with: {{ receiverName }}</div>
+        <div class="mb-3" style="max-height:300px;overflow-y:auto;">
+          <div *ngFor="let m of messages" class="border rounded p-2 mb-2 bg-light">
+            <strong>{{ m.senderName }}</strong>: {{ m.content }}
+          </div>
+          <div *ngIf="!messages.length" class="text-muted">No messages yet.</div>
+        </div>
+        <div class="input-group">
+          <input [(ngModel)]="text" placeholder="Message..." class="form-control" />
+          <button (click)="send()" class="btn btn-primary" [disabled]="!text.trim() || !selectedUserId">Send</button>
+        </div>
       </div>
-      <div *ngIf="!messages.length" class="text-muted">No messages yet.</div>
-    </div>
-    <div class="input-group">
-      <input [(ngModel)]="text" placeholder="Message..." class="form-control" />
-      <button (click)="send()" class="btn btn-primary" [disabled]="!text.trim() || !receiverId">Send</button>
     </div>
   </div>
 </div>

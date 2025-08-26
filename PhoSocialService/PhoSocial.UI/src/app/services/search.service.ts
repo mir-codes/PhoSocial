@@ -6,5 +6,8 @@ import { environment } from 'src/environments/environment';
 export class SearchService {
   private base = environment.apiUrl + '/Search';
   constructor(private http: HttpClient) {}
-  users(q: string) { return this.http.get<any[]>(`${this.base}/users?q=${encodeURIComponent(q)}`); }
+  users(q: string) {
+    if (!q || !q.trim()) return { subscribe: () => {} };
+    return this.http.get<any[]>(`${this.base}/users?q=${encodeURIComponent(q)}`);
+  }
 }

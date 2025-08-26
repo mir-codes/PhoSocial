@@ -7,7 +7,11 @@ import { Router } from '@angular/router';
   templateUrl: './topbar.component.html'
 })
 export class TopbarComponent {
-  constructor(public auth: AuthService, private router: Router) {}
+  userName: string | null = null;
+
+  constructor(public auth: AuthService, private router: Router) {
+    this.userName = this.auth.getUserNameFromToken();
+  }
 
   get isLoggedIn() {
     return this.auth.isLoggedIn();
@@ -16,6 +20,7 @@ export class TopbarComponent {
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
+    this.userName = null;
   }
 
   onSearch(q: string) {
