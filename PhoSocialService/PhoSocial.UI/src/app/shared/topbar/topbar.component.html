@@ -4,10 +4,13 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <div *ngIf="isLoggedIn" class="navbar-nav">
+    <div class="navbar-nav">
       <a class="nav-link" routerLink="/feed">Feed</a>
       <a class="nav-link" routerLink="/chat">Chat</a>
       <a class="nav-link" routerLink="/profile">Profile</a>
+      <a class="nav-link" routerLink="/search">User Search</a>
+      <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login">Login</a>
+      <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/signup">Sign Up</a>
     </div>
     <div class="ms-auto d-flex align-items-center">
       <form *ngIf="isLoggedIn" class="d-flex" (submit)="onSearch(search.value)">

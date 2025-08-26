@@ -8,6 +8,8 @@ export class FeedService {
   constructor(private http: HttpClient) {}
 
   getPosts() { return this.http.get<any[]>(`${this.base}/posts`); }
+  getLikes(postId: string) { return this.http.get<number>(`${this.base}/likes/${postId}`); }
+  getComments(postId: string) { return this.http.get<any[]>(`${this.base}/comments/${postId}`); }
 
   createPost(caption: string, image?: File) {
     const fd = new FormData();
