@@ -17,6 +17,7 @@ import { SearchbarComponent } from './shared/searchbar/searchbar.component';
 import { UserListComponent } from './shared/user-list/user-list.component';
 import { MessageListComponent } from './shared/message-list/message-list.component';
 import { MessageInputComponent } from './shared/message-input/message-input.component';
+import { UserSearchComponent } from './pages/user-search/user-search.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { MessageInputComponent } from './shared/message-input/message-input.comp
     SearchbarComponent,
     UserListComponent,
     MessageListComponent,
-    MessageInputComponent
+  MessageInputComponent,
+  UserSearchComponent
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ import { FeedComponent } from "./pages/feed/feed.component";
 import { ChatComponent } from "./pages/chat/chat.component";
 import { ProfileComponent } from "./pages/profile/profile.component"; // ✅ correct path
 import { PostDetailComponent } from "./pages/post-detail/post-detail.component"; // ✅ correct path
+import { UserSearchComponent } from "./pages/user-search/user-search.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'feed', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'post/:id', component: PostDetailComponent },
+  { path: 'search', component: UserSearchComponent },
   { path: '**', redirectTo: 'feed' }
 ];
 
