@@ -17,6 +17,7 @@ import { SearchbarComponent } from './shared/searchbar/searchbar.component';
 import { UserListComponent } from './shared/user-list/user-list.component';
 import { MessageListComponent } from './shared/message-list/message-list.component';
 import { MessageInputComponent } from './shared/message-input/message-input.component';
+import { FooterComponent } from './shared/footer/footer.component';
 import { UserSearchComponent } from './pages/user-search/user-search.component';
 
 @NgModule({
@@ -34,7 +35,8 @@ import { UserSearchComponent } from './pages/user-search/user-search.component';
     UserListComponent,
     MessageListComponent,
   MessageInputComponent,
-  UserSearchComponent
+  UserSearchComponent,
+  FooterComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
-<div class="card p-3 mb-3">
-  <h5>User Search</h5>
+<div class="user-search-card card p-4 mb-3 mx-auto" style="max-width:500px;">
+  <h5 class="mb-3">User Search</h5>
   <div class="input-group mb-2">
     <input [(ngModel)]="term" (keyup.enter)="doSearch()" class="form-control" placeholder="Search users by name or email..." />
     <button class="btn btn-primary" (click)="doSearch()">Search</button>
@@ -8,7 +8,7 @@
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <div *ngIf="users.length">
     <ul class="list-group">
-      <li *ngFor="let u of users" class="list-group-item d-flex justify-content-between align-items-center">
+      <li *ngFor="let u of users" class="list-group-item d-flex justify-content-between align-items-center bg-light">
         <span>{{ u.userName }} <small class="text-muted">{{ u.email }}</small></span>
         <a [routerLink]="['/chat']" [queryParams]="{ userId: u.id }" class="btn btn-sm btn-outline-success">Chat</a>
       </li>

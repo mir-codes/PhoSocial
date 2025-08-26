@@ -1,18 +1,22 @@
-<div class="card p-3 mb-3">
-	<h5>Post Details</h5>
-	<!-- TODO: Display post info, image, likes -->
+<div class="post-detail-card card p-4 mb-3 mx-auto" style="max-width:500px;">
+	<h5 class="mb-3">Post Details</h5>
 	<div *ngIf="loading">Loading...</div>
 	<div *ngIf="!loading && post">
-		<div><strong>{{ post.userName }}</strong></div>
-		<div>{{ post.caption }}</div>
-		<img *ngIf="post.imagePath" [src]="post.imagePath" class="img-fluid mb-2" />
-		<!-- TODO: Like/Unlike, show like count -->
+		<div class="fw-bold mb-1">{{ post.userName }}</div>
+		<div class="mb-2">{{ post.caption }}</div>
+		<img *ngIf="post.imagePath" [src]="'https://localhost:7095/' + post.imagePath" class="img-fluid rounded shadow-sm mb-2" style="max-height:300px;object-fit:cover;" />
+		<button class="btn btn-sm btn-outline-primary mb-2" (click)="like()">Like</button>
+		<!-- TODO: Show like count -->
 	</div>
 	<div *ngIf="!loading">
 		<h6>Comments</h6>
-		<div *ngFor="let c of comments" class="border rounded p-2 mb-2">
+		<div *ngFor="let c of comments" class="border rounded p-2 mb-2 bg-light">
 			<strong>{{ c.userName }}</strong>: {{ c.content }}
 		</div>
-		<!-- TODO: Add comment form -->
+		<div class="input-group mt-2">
+			<input [(ngModel)]="commentText" class="form-control" placeholder="Add a comment..." />
+			<button class="btn btn-success" (click)="addComment()">Comment</button>
+		</div>
+		<div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
 	</div>
 </div>

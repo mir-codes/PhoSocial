@@ -1,4 +1,24 @@
-﻿@import "~bootstrap/dist/css/bootstrap.min.css"; // optional
+﻿/* Responsive card styles for main pages */
+.profile-card, .post-detail-card, .chat-card, .user-search-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  border: none;
+  padding: 0;
+}
+.profile-card:hover, .post-detail-card:hover, .chat-card:hover, .user-search-card:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+
+@media (max-width: 600px) {
+  .profile-card, .post-detail-card, .chat-card, .user-search-card {
+    max-width: 98vw !important;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5rem;
+  }
+}
+@import "~bootstrap/dist/css/bootstrap.min.css"; // optional
 
 /* Neumorphism variables */
 $bg: #f6f8fb;
@@ -23,6 +43,19 @@ body {
   border-radius: 12px;
   padding: 14px;
   box-shadow: 8px 8px 18px $shadow-dark, -8px -8px 18px $shadow-light;
+}
+
+/* Feed card style */
+.feed-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 0;
+  transition: box-shadow 0.2s;
+  border: none;
+}
+.feed-card:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
 }
 
 /* responsive */
