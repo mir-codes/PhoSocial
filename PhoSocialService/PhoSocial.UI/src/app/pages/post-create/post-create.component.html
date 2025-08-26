@@ -1,1 +1,13 @@
-<p>post-create works!</p>
+<div class="card p-3 mb-3">
+	<h5 class="mb-2">Create Post</h5>
+	<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+	<div class="mb-2">
+		<input [(ngModel)]="caption" class="form-control" placeholder="What's on your mind?" />
+	</div>
+	<div class="mb-2">
+		<input type="file" (change)="onFileChange($event)" class="form-control" />
+	</div>
+	<button class="btn btn-success w-100" [disabled]="loading" (click)="submit()">
+		{{ loading ? 'Posting...' : 'Post' }}
+	</button>
+</div>

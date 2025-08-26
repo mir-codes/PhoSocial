@@ -1,1 +1,18 @@
-<p>post-detail works!</p>
+<div class="card p-3 mb-3">
+	<h5>Post Details</h5>
+	<!-- TODO: Display post info, image, likes -->
+	<div *ngIf="loading">Loading...</div>
+	<div *ngIf="!loading && post">
+		<div><strong>{{ post.userName }}</strong></div>
+		<div>{{ post.caption }}</div>
+		<img *ngIf="post.imagePath" [src]="post.imagePath" class="img-fluid mb-2" />
+		<!-- TODO: Like/Unlike, show like count -->
+	</div>
+	<div *ngIf="!loading">
+		<h6>Comments</h6>
+		<div *ngFor="let c of comments" class="border rounded p-2 mb-2">
+			<strong>{{ c.userName }}</strong>: {{ c.content }}
+		</div>
+		<!-- TODO: Add comment form -->
+	</div>
+</div>
