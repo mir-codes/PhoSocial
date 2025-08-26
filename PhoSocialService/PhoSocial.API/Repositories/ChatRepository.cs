@@ -22,7 +22,7 @@ namespace PhoSocial.API.Repositories
         public async Task CreateMessageAsync(Message message)
         {
             using var conn = _db.CreateConnection();
-            var sql = "INSERT INTO Messages (Id, SenderId, ReceiverId, Content, Status, CreatedAt) VALUES (@Id,@SenderId,@ReceiverId,@Content,@Status,@CreatedAt)";
+            var sql = "INSERT INTO Messages (Id, SenderId, ReceiverId, Content, Status, CreatedAt, UserName) VALUES (@Id,@SenderId,@ReceiverId,@Content,@Status,@CreatedAt,@UserName)";
             await conn.ExecuteAsync(sql, message);
         }
 

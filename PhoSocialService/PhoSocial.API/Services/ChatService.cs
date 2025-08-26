@@ -15,18 +15,22 @@ namespace PhoSocial.API.Services
     public class ChatService : IChatService
     {
         private readonly IChatRepository _repo;
-        public ChatService(IChatRepository repo) { _repo = repo; }
+        private readonly IUserRepository _userRepo;
+        public ChatService(IChatRepository repo, IUserRepository userRepo) { _repo = repo; _userRepo = userRepo; }
 
         public async Task<Message> CreateMessageAsync(string senderId, string receiverId, string content)
         {
+            var senderGuid = Guid.Parse(senderId);
+            var sender = await _userRepo.GetByIdAsync(senderGuid);
             var msg = new Message
             {
                 Id = Guid.NewGuid(),
-                SenderId = Guid.Parse(senderId),
+                SenderId = senderGuid,
                 ReceiverId = Guid.Parse(receiverId),
                 Content = content,
                 Status = "Sent",
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UserName = sender?.UserName
             };
             await _repo.CreateMessageAsync(msg);
             return msg;

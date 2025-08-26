@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   chatUsers: any[] = [];
   selectedUserId = '';
   chatUsersSub!: Subscription;
-  audio = new Audio('/assets/message.mp3');
+  audio = new Audio('/assets/MessageRecived.mp3');
 
   constructor(
     private chat: ChatService,
@@ -60,7 +60,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       .then(data => {
         this.messages = (data || []).map((msg: any) => ({
           ...msg,
-          senderName: msg.senderName || msg.senderId
+          senderName: msg.UserName || msg.senderName || msg.senderId
         }));
         this.loading = false;
         // Reset unread count for this user
@@ -87,7 +87,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   async handleIncomingMessage(msg: any) {
     this.messages = [{
       ...msg,
-      senderName: msg.senderName || msg.senderId
+      senderName: msg.UserName || msg.senderName || msg.senderId
     }, ...this.messages];
     this.audio.play();
   }
