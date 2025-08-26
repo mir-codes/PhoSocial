@@ -1,0 +1,54 @@
+name: Commit Message & Build Check
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/*"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  commit-message:
+    name: Validate Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Check commit messages
+        run: |
+          # Get last commit message
+          msg=$(git log -1 --pretty=%B)
+          # Check for at least 3 words
+          if [[ $(echo "$msg" | wc -w) -lt 3 ]]; then
+            echo "::error::Commit message must be at least 3 words."
+            exit 1
+          fi
+
+  build:
+    name: Build Angular & .NET
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      - name: Install Angular dependencies
+        run: |
+          cd PhoSocialService/PhoSocial.UI
+          npm install
+      - name: Build Angular
+        run: |
+          cd PhoSocialService/PhoSocial.UI
+          npm run build
+      - name: Build .NET API
+        run: |
+          cd PhoSocialService/PhoSocial.API
+          dotnet build
