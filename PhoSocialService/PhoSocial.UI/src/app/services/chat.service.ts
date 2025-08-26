@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  private hubConn!: signalR.HubConnection;
+  public hubConn!: signalR.HubConnection;
   public messages$ = new BehaviorSubject<any[]>([]);
   public typing$ = new BehaviorSubject<string | null>(null);
 
