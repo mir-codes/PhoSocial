@@ -1,0 +1,16 @@
+{
+    "/api": {
+      "target": "https://localhost:7095",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+    "/hubs": {
+      "target": "https://localhost:7095",
+      "secure": false,
+      "changeOrigin": true,
+      "ws": true,
+      "logLevel": "debug"
+    }
+  }
+  

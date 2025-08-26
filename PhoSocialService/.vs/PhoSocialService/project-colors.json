@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "6e3f2783-cba5-47be-a9a8-0bc02dfc3052": {
+      "ProjectGuid": "6e3f2783-cba5-47be-a9a8-0bc02dfc3052",
+      "DisplayName": "PhoSocial.API",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

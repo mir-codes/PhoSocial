@@ -1,0 +1,21 @@
+﻿<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Feed</h4>
+  <button class="btn-neu" (click)="openCreate()">+ New Post</button>
+</div>
+
+<div class="row row-gap">
+  <app-post-create (posted)="reloadPosts()" *ngIf="showCreate"></app-post-create>
+
+  <div *ngFor="let p of filteredPosts" class="neu-card">
+    <div class="d-flex justify-content-between">
+      <div><strong>{{ p.userName || 'User' }}</strong></div>
+      <div class="text-muted small">{{ p.createdAt | date:'short' }}</div>
+    </div>
+    <p>{{ p.caption }}</p>
+    <img *ngIf="p.imagePath" class="post-image" [src]="'https://localhost:7095/' + p.imagePath" />
+    <div class="d-flex gap-2 mt-2">
+      <button class="btn btn-sm btn-neu" (click)="like(p.id)">Like</button>
+      <button class="btn btn-sm btn-neu" (click)="openDetail(p)">Comments</button>
+    </div>
+  </div>
+</div>

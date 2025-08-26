@@ -1,0 +1,18 @@
+﻿<nav class="navbar navbar-expand navbar-dark bg-dark px-3">
+  <a class="navbar-brand" routerLink="/">PhoSocial</a>
+
+  <div *ngIf="isLoggedIn" class="navbar-nav">
+    <a class="nav-link" routerLink="/feed">Feed</a>
+    <a class="nav-link" routerLink="/chat">Chat</a>
+    <a class="nav-link" routerLink="/profile">Profile</a>
+  </div>
+
+  <div class="ms-auto d-flex align-items-center">
+    <form *ngIf="isLoggedIn" class="d-flex" (submit)="onSearch(search.value)">
+      <input #search class="form-control form-control-sm me-2" placeholder="Search..." />
+      <button class="btn btn-sm btn-outline-light" type="submit">Go</button>
+    </form>
+
+    <button *ngIf="isLoggedIn" class="btn btn-sm btn-danger ms-2" (click)="logout()">Logout</button>
+  </div>
+</nav>
