@@ -19,6 +19,8 @@ import { MessageListComponent } from './shared/message-list/message-list.compone
 import { MessageInputComponent } from './shared/message-input/message-input.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { UserSearchComponent } from './pages/user-search/user-search.component';
+import { ThemeToggleComponent } from './shared/theme-toggle/theme-toggle.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -34,9 +36,11 @@ import { UserSearchComponent } from './pages/user-search/user-search.component';
     SearchbarComponent,
     UserListComponent,
     MessageListComponent,
-  MessageInputComponent,
-  UserSearchComponent,
-  FooterComponent
+    MessageInputComponent,
+    UserSearchComponent,
+    FooterComponent,
+    ThemeToggleComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

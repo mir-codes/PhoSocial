@@ -1,0 +1,161 @@
+﻿/* Modern glass-morphism card styles */
+.profile-card, .post-detail-card, .chat-card, .user-search-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+.profile-card:hover, .post-detail-card:hover, .chat-card:hover, .user-search-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 600px) {
+  .profile-card, .post-detail-card, .chat-card, .user-search-card {
+    max-width: 98vw !important;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5rem;
+  }
+}
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css");
+
+:root {
+  --bg-color: #f6f8fb;
+  --card-bg: #ffffff;
+  --shadow-dark: rgba(0,0,0,0.08);
+  --shadow-light: rgba(255,255,255,0.9);
+  --accent-pink: #f8d8ea;
+  --accent-green: #d9f6f3;
+  --text-primary: #222;
+  --gradient-primary: linear-gradient(135deg, #6e8efb, #4776e6);
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg-color);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  margin: 0;
+  padding: 0;
+  color: var(--text-primary);
+}
+
+/* Modern card with gradient accents */
+.modern-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px var(--shadow-dark);
+}
+
+.modern-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--gradient-primary);
+}
+
+/* Modern theme variables */
+:root {
+  --background: #f6f8fb;
+  --surface: #ffffff;
+  --surface-hover: #ffffff;
+  --primary: #4776e6;
+  --secondary: #ff7eb3;
+  --text: #1a1a1a;
+  --text-secondary: #757575;
+  --border: rgba(0,0,0,0.1);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.08);
+  --gradient-primary: linear-gradient(135deg, #6e8efb, #4776e6);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121212;
+    --surface: #1e1e1e;
+    --surface-hover: #2a2a2a;
+    --text: #ffffff;
+    --text-secondary: #b0b0b0;
+    --border: rgba(255,255,255,0.1);
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
+    --shadow-md: 0 8px 32px rgba(0,0,0,0.3);
+  }
+}
+
+/* Manual dark mode toggle */
+[data-theme="dark"] {
+  --background: #121212;
+  --surface: #1e1e1e;
+  --surface-hover: #2a2a2a;
+  --text: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border: rgba(255,255,255,0.1);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* Base styles */
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  transition: background-color 0.3s ease;
+}
+
+/* Modern card styles */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: var(--surface-hover);
+}
+
+/* Feed card with modern styling */
+.feed-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+/* responsive */
+@media (max-width: 576px) {
+  .container { padding-left: 8px; padding-right: 8px; }
+  .topbar .nav { gap: 8px; font-size: 14px; }
+}
+
+/* small helpers */
+.row-gap { gap: 12px; display:flex; flex-direction:column; }
+.btn-neu {
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 10px;
+  border: none;
+  padding: 8px 12px;
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.06), -4px -4px 8px rgba(255,255,255,0.8);
+}
+img.post-image { max-width:100%; border-radius:8px; display:block; margin-top:8px; }
+.search-inline { display:flex; gap:8px; align-items:center; }
