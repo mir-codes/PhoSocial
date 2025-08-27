@@ -45,7 +45,13 @@ export class AuthService {
     if (!token) return null;
     try {
       const decoded: any = jwtDecode(token);
-      return decoded.userName || decoded.name || null;
+      // Try standard claims, then fallback to custom claim
+      return (
+        decoded.userName ||
+        decoded.name ||
+        decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ||
+        null
+      );
     } catch {
       return null;
     }

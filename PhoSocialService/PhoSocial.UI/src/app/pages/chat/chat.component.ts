@@ -21,7 +21,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   chatUsers: any[] = [];
   selectedUserId = '';
   chatUsersSub!: Subscription;
-  audio = new Audio('/assets/MessageRecived.mp3');
+  audio = new Audio('/assets/NotificationSounds/MessageRecived.mp3');
+    sending = false;
 
   constructor(
     private chat: ChatService,
@@ -71,10 +72,22 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   async send() {
-    if (!this.selectedUserId) return;
-    await this.chat.sendMessage(this.selectedUserId, this.text);
-    this.text = "";
-    this.loadHistory();
+      if (!this.selectedUserId || !this.text.trim() || this.sending) return;
+      this.sending = true;
+      try {
+        // Ensure SignalR connection is started
+        if (!this.chat.hubConn || this.chat.hubConn.state !== 'Connected') {
+          await this.chat.start();
+        }
+        await this.chat.sendMessage(this.selectedUserId, this.text);
+        this.text = "";
+        this.loadHistory();
+      } catch (err) {
+        console.error('Failed to send message:', err);
+        // Optionally show error to user
+      } finally {
+        this.sending = false;
+      }
   }
 
   onSelectUser(id: string) {
@@ -82,6 +95,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.receiverId = id;
     this.loadReceiverName();
     this.loadHistory();
+    this.text = "";
   }
 
   async handleIncomingMessage(msg: any) {
