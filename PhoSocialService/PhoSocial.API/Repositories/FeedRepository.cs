@@ -10,6 +10,7 @@ namespace PhoSocial.API.Repositories
     {
         Task CreatePostAsync(Post post);
         Task<IEnumerable<Post>> GetRecentPostsAsync(int take = 50);
+        Task<IEnumerable<Post>> GetUserPostsAsync(Guid userId, int page = 0, int pageSize = 10);
         Task CreateLikeAsync(Like like);
         Task RemoveLikeAsync(Guid postId, Guid userId);
         Task CreateCommentAsync(Comment comment);
@@ -32,6 +33,19 @@ namespace PhoSocial.API.Repositories
             using var conn = _db.CreateConnection();
             var sql = "SELECT TOP (@Take) * FROM Posts ORDER BY CreatedAt DESC";
             return await conn.QueryAsync<Post>(sql, new { Take = take });
+        }
+
+        public async Task<IEnumerable<Post>> GetUserPostsAsync(Guid userId, int page = 0, int pageSize = 10)
+        {
+            using var conn = _db.CreateConnection();
+            var sql = @"
+                SELECT * 
+                FROM Posts 
+                WHERE UserId = @UserId 
+                ORDER BY CreatedAt DESC
+                OFFSET @Offset ROWS 
+                FETCH NEXT @PageSize ROWS ONLY";
+            return await conn.QueryAsync<Post>(sql, new { UserId = userId, Offset = page * pageSize, PageSize = pageSize });
         }
 
         public async Task CreateLikeAsync(Like like)

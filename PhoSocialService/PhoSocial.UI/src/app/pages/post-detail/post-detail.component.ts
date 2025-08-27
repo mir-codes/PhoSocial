@@ -4,7 +4,7 @@ import { FeedService } from 'src/app/services/feed.service';
 @Component({
   selector: 'app-post-detail',
   templateUrl: './post-detail.component.html',
-  styleUrls: ['./post-detail.component.scss']
+  styleUrls: ['./post-detail.component.css']
 })
 export class PostDetailComponent implements OnInit {
   post: any;

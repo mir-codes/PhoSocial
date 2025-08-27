@@ -48,7 +48,7 @@ PhoSocial/
 │       │   │   └── ...
 │       │   ├── assets/        # Static assets (images, icons)
 │       │   ├── environments/  # Environment configs
-│       │   ├── styles.scss    # Global styles (Bootstrap, custom)
+│       │   ├── styles.css    # Global styles (Bootstrap, custom)
 │       │   └── ...
 │       ├── angular.json       # Angular project config
 │       ├── package.json       # NPM dependencies
