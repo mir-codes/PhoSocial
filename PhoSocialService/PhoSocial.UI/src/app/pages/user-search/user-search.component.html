@@ -1,18 +1,66 @@
-<div class="user-search-card card p-4 mb-3 mx-auto" style="max-width:500px;">
-  <h5 class="mb-3">User Search</h5>
-  <div class="input-group mb-2">
-    <input [(ngModel)]="term" (keyup.enter)="doSearch()" class="form-control" placeholder="Search users by name or email..." />
-    <button class="btn btn-primary" (click)="doSearch()">Search</button>
+<div class="user-search-container">
+  <div class="user-search-card">
+    <div class="search-header">
+      <h2 class="glow-text">Find Users</h2>
+      <p class="subtitle">Search and connect with friends</p>
+    </div>
+
+    <div class="search-input-section">
+      <div class="input-group search-group">
+        <input 
+          [(ngModel)]="term" 
+          (keyup.enter)="doSearch()" 
+          class="form-control search-input"
+          placeholder="Search by name or email..."
+        />
+        <button 
+          class="btn btn-primary search-btn" 
+          (click)="doSearch()"
+        >
+          <i class="bi bi-search"></i> Search
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Searching users...</p>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+      <i class="bi bi-exclamation-circle"></i> {{ error }}
+    </div>
+
+    <div *ngIf="users && users.length > 0; else noResults" class="users-list">
+      <div *ngFor="let u of users" class="user-card">
+        <div class="user-card-content">
+          <div class="user-avatar">{{ (u.userName || 'User').charAt(0).toUpperCase() }}</div>
+          <div class="user-details">
+            <h4>{{ u.userName }}</h4>
+            <p class="user-email">{{ u.email }}</p>
+          </div>
+        </div>
+        <a 
+          [routerLink]="['/chat']" 
+          [queryParams]="{ userId: u.id }" 
+          class="btn btn-primary chat-btn"
+        >
+          <i class="bi bi-chat-dots"></i> Message
+        </a>
+      </div>
+    </div>
+
+    <ng-template #noResults>
+      <div *ngIf="!loading && term" class="no-results">
+        <i class="bi bi-search"></i>
+        <h4>No users found</h4>
+        <p>Try searching with a different name or email</p>
+      </div>
+      <div *ngIf="!loading && !term" class="no-results">
+        <i class="bi bi-people"></i>
+        <h4>Start searching</h4>
+        <p>Enter a name or email to find users</p>
+      </div>
+    </ng-template>
   </div>
-  <div *ngIf="loading">Searching...</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  <div *ngIf="users.length">
-    <ul class="list-group">
-      <li *ngFor="let u of users" class="list-group-item d-flex justify-content-between align-items-center bg-light">
-        <span>{{ u.userName }} <small class="text-muted">{{ u.email }}</small></span>
-        <a [routerLink]="['/chat']" [queryParams]="{ userId: u.id }" class="btn btn-sm btn-outline-success">Chat</a>
-      </li>
-    </ul>
-  </div>
-  <div *ngIf="!loading && !users.length && term">No users found.</div>
 </div>

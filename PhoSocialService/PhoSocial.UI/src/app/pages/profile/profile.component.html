@@ -1,9 +1,38 @@
-<div class="profile-card card p-4 mb-3 mx-auto" style="max-width:400px;">
-	<h5 class="mb-3">Profile</h5>
-	<div class="d-flex flex-column align-items-center">
-		<div class="rounded-circle bg-light mb-2" style="width:80px;height:80px;box-shadow:0 2px 8px rgba(0,0,0,0.07);"></div>
-		<div class="fw-bold mb-1">User Name</div>
-		<div class="text-muted mb-3">user@email.com</div>
-		<button class="btn btn-outline-primary btn-sm">Edit Profile</button>
-	</div>
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="neu-element" style="padding: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+        <div style="text-align: center;">
+            <div style="width: 120px; height: 120px; border-radius: var(--radius-full); background: linear-gradient(135deg, var(--color-blue), var(--color-green)); margin: 0 auto var(--spacing-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 700; box-shadow: 0 0 30px var(--glow-blue);">
+                A
+            </div>
+            <h2 style="color: var(--color-blue); margin-bottom: var(--spacing-xs);">Alex Chen</h2>
+            <p style="color: #a3b1c6; margin-bottom: var(--spacing-lg);">@alexchen • Photography Enthusiast</p>
+        </div>
+
+        <p style="text-align: center; color: #5a6c7d; margin-bottom: var(--spacing-lg);">
+            📸 Photography enthusiast | ☕ Coffee lover | 🌍 Exploring the world one photo at a time
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+            <div class="neu-element" style="padding: var(--spacing-md); text-align: center;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--color-blue); margin-bottom: 0.5rem;">42</div>
+                <div style="font-size: 0.9rem; color: #a3b1c6;">Posts</div>
+            </div>
+            <div class="neu-element" style="padding: var(--spacing-md); text-align: center;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--color-pink); margin-bottom: 0.5rem;">1.2K</div>
+                <div style="font-size: 0.9rem; color: #a3b1c6;">Followers</div>
+            </div>
+            <div class="neu-element" style="padding: var(--spacing-md); text-align: center;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--color-green); margin-bottom: 0.5rem;">567</div>
+                <div style="font-size: 0.9rem; color: #a3b1c6;">Following</div>
+            </div>
+        </div>
+
+        <button class="neu-element" style="width: 100%; padding: var(--spacing-md); border: none; font-size: 1rem; font-weight: 600; color: var(--color-pink); cursor: pointer; margin-bottom: var(--spacing-sm);">
+            ✏️ Edit Profile
+        </button>
+
+        <button class="neu-element" style="width: 100%; padding: var(--spacing-md); border: none; font-size: 1rem; font-weight: 600; color: #7a8b9d; cursor: pointer; (click)='logout()'">
+            🚪 Logout
+        </button>
+    </div>
 </div>

@@ -1,13 +1,49 @@
-<div class="card p-3 mb-3">
-	<h5 class="mb-2">Create Post</h5>
-	<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-	<div class="mb-2">
-		<input [(ngModel)]="caption" class="form-control" placeholder="What's on your mind?" />
-	</div>
-	<div class="mb-2">
-		<input type="file" (change)="onFileChange($event)" class="form-control" />
-	</div>
-	<button class="btn btn-success w-100" [disabled]="loading" (click)="submit()">
-		{{ loading ? 'Posting...' : 'Post' }}
-	</button>
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="neu-element" style="padding: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+        <h2 style="text-align: center; margin-bottom: var(--spacing-lg); background: linear-gradient(135deg, var(--color-pink), var(--color-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            ✨ Create New Post
+        </h2>
+
+        <div style="margin-bottom: var(--spacing-md);">
+            <label style="display: block; margin-bottom: var(--spacing-sm); color: #5a6c7d; font-weight: 500;">What's on your mind?</label>
+            <textarea 
+                [(ngModel)]="caption"
+                placeholder="Share your thoughts..."
+                class="neu-inset"
+                style="width: 100%; padding: var(--spacing-md); min-height: 100px; border: none; font-family: var(--font-primary); font-size: 1rem; color: #5a6c7d; border-radius: var(--radius-md); resize: vertical;"
+            ></textarea>
+        </div>
+
+        <div style="margin-bottom: var(--spacing-md);">
+            <label style="display: block; margin-bottom: var(--spacing-sm); color: #5a6c7d; font-weight: 500;">Add Photo</label>
+            <input 
+                type="file" 
+                (change)="onFileChange($event)"
+                class="file-input"
+                accept="image/*"
+                id="file-input"
+                style="display: none;"
+            />
+            <label for="file-input" class="neu-element" style="display: block; padding: var(--spacing-lg); text-align: center; cursor: pointer; border: 2px dashed rgba(91, 134, 229, 0.3); border-radius: var(--radius-md); transition: all var(--transition-medium);">
+                <div style="font-size: 2rem; margin-bottom: var(--spacing-sm);">🖼️</div>
+                <div style="color: var(--color-blue); font-weight: 600; margin-bottom: 0.5rem;">Click to upload photo</div>
+                <div style="color: #a3b1c6; font-size: 0.9rem;">or drag and drop</div>
+            </label>
+            <div *ngIf="selectedFileName" class="neu-element" style="padding: var(--spacing-md); margin-top: var(--spacing-sm); text-align: center; background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(78, 205, 196, 0.05));">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">✅</div>
+                <div style="color: var(--color-green); font-weight: 600;">{{ selectedFileName }}</div>
+            </div>
+        </div>
+
+        <button 
+            class="neu-element"
+            [style.background]="'linear-gradient(135deg, #4ecdc4, #45b5ad)'"
+            style="width: 100%; padding: var(--spacing-md); border: none; color: white; font-weight: 600; font-size: 1rem; cursor: pointer; box-shadow: 8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light), 0 0 20px var(--glow-green);"
+            (click)="submit()"
+            [disabled]="loading"
+        >
+            <span *ngIf="!loading">📤 Publish Post</span>
+            <span *ngIf="loading">⏳ Publishing...</span>
+        </button>
+    </div>
 </div>

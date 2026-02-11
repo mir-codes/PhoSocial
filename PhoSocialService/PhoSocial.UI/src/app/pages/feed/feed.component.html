@@ -1,24 +1,231 @@
-﻿<div class="d-flex justify-content-between align-items-center mb-3">
-  <h4>Feed</h4>
-  <button *ngIf="isLoggedIn" class="btn btn-success" (click)="openCreate()">+ New Post</button>
-</div>
+﻿<div class="content-wrapper">
+    <div style="flex: 1;">
+        <!-- Stories Section -->
+        <div class="stories-container neu-element">
+            <h2 class="section-title">Stories</h2>
+            <div class="stories-scroll">
+                <div class="story-item neu-element">
+                    <div class="story-avatar gradient-border-pink">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" alt="Your Story">
+                        <div class="add-story-icon">+</div>
+                    </div>
+                    <span class="story-name">Your Story</span>
+                </div>
+                <div class="story-item neu-element active-story">
+                    <div class="story-avatar gradient-border-blue">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" alt="User">
+                    </div>
+                    <span class="story-name">Alex Chen</span>
+                </div>
+                <div class="story-item neu-element active-story">
+                    <div class="story-avatar gradient-border-peach">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" alt="User">
+                    </div>
+                    <span class="story-name">Emma Rose</span>
+                </div>
+                <div class="story-item neu-element active-story">
+                    <div class="story-avatar gradient-border-green">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" alt="User">
+                    </div>
+                    <span class="story-name">Mike Taylor</span>
+                </div>
+            </div>
+        </div>
 
-<div class="row row-gap">
-  <app-post-create (posted)="reloadPosts()" *ngIf="showCreate"></app-post-create>
+        <!-- Posts Feed -->
+        <div class="posts-feed">
+            <article class="post-card neu-element">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <div class="user-avatar neu-element">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" alt="Alex">
+                        </div>
+                        <div class="user-details">
+                            <h3 class="user-name color-blue">Alex Chen</h3>
+                            <span class="post-time">2 hours ago • 📍 Tokyo</span>
+                        </div>
+                    </div>
+                    <button class="post-menu-btn neu-element">⋯</button>
+                </div>
+                
+                <div class="post-content">
+                    <p class="post-text">Amazing sunset at Shibuya Sky! 🌅✨</p>
+                </div>
+                
+                <div class="post-image neu-inset">
+                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800" alt="Tokyo">
+                </div>
+                
+                <div class="post-stats">
+                    <span class="stat-item">❤️ 1.2k</span>
+                    <span class="stat-item">💬 48</span>
+                    <span class="stat-item">🔄 23</span>
+                </div>
+                
+                <div class="post-actions">
+                    <button class="action-btn neu-element like-btn" (click)="toggleLike('post1')">
+                        <span class="action-icon">❤️</span>
+                        <span class="action-label color-pink">Like</span>
+                    </button>
+                    <button class="action-btn neu-element" (click)="openComments('post1')">
+                        <span class="action-icon">💬</span>
+                        <span class="action-label color-blue">Comment</span>
+                    </button>
+                    <button class="action-btn neu-element">
+                        <span class="action-icon">🔄</span>
+                        <span class="action-label color-green">Share</span>
+                    </button>
+                    <button class="action-btn neu-element">
+                        <span class="action-icon">🔖</span>
+                        <span class="action-label color-orange">Save</span>
+                    </button>
+                </div>
+            </article>
 
-  <div *ngFor="let p of filteredPosts" class="feed-card mb-3">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center mb-1">
-        <div class="fw-bold">{{ p.userName || 'User' }}</div>
-        <div class="text-muted small">{{ p.createdAt | date:'short' }}</div>
-      </div>
-      <div class="mb-2">{{ p.caption }}</div>
-      <img *ngIf="p.imagePath" class="img-fluid rounded shadow-sm mb-2" [src]="'https://localhost:7095/' + p.imagePath" style="max-height:300px;object-fit:cover;" />
-      <div class="d-flex gap-2 mt-2 align-items-center">
-        <button class="btn btn-sm btn-outline-primary" (click)="like(p.id)">Like</button>
-        <span class="ms-2 text-muted">{{ p.likeCount || 0 }} Likes</span>
-        <button class="btn btn-sm btn-outline-secondary" (click)="openDetail(p)">Comments</button>
-      </div>
+            <article class="post-card neu-element">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <div class="user-avatar neu-element">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" alt="Emma">
+                        </div>
+                        <div class="user-details">
+                            <h3 class="user-name color-peach">Emma Rose</h3>
+                            <span class="post-time">5 hours ago • 📍 Paris</span>
+                        </div>
+                    </div>
+                    <button class="post-menu-btn neu-element">⋯</button>
+                </div>
+                
+                <div class="post-content">
+                    <p class="post-text">Coffee and croissants ☕🥐</p>
+                </div>
+                
+                <div class="post-image neu-inset">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800" alt="Coffee">
+                </div>
+                
+                <div class="post-stats">
+                    <span class="stat-item">❤️ 892</span>
+                    <span class="stat-item">💬 31</span>
+                </div>
+                
+                <div class="post-actions">
+                    <button class="action-btn neu-element like-btn" (click)="toggleLike('post2')">
+                        <span class="action-icon">❤️</span>
+                        <span class="action-label color-pink">Like</span>
+                    </button>
+                    <button class="action-btn neu-element" (click)="openComments('post2')">
+                        <span class="action-icon">💬</span>
+                        <span class="action-label color-blue">Comment</span>
+                    </button>
+                    <button class="action-btn neu-element">
+                        <span class="action-icon">🔄</span>
+                        <span class="action-label color-green">Share</span>
+                    </button>
+                    <button class="action-btn neu-element">
+                        <span class="action-icon">🔖</span>
+                        <span class="action-label color-orange">Save</span>
+                    </button>
+                </div>
+            </article>
+
+            <article class="post-card neu-element">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <div class="user-avatar neu-element">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" alt="Mike">
+                        </div>
+                        <div class="user-details">
+                            <h3 class="user-name color-green">Mike Taylor</h3>
+                            <span class="post-time">8 hours ago • 📍 New York</span>
+                        </div>
+                    </div>
+                    <button class="post-menu-btn neu-element">⋯</button>
+                </div>
+                
+                <div class="post-content">
+                    <p class="post-text">Perfect morning run in Central Park! 🏃‍♂️💚</p>
+                </div>
+                
+                <div class="post-image neu-inset">
+                    <img src="https://images.unsplash.com/photo-1552817426-a6a88e8e400c?w=800" alt="Park">
+                </div>
+                
+                <div class="post-stats">
+                    <span class="stat-item">❤️ 567</span>
+                    <span class="stat-item">💬 24</span>
+                </div>
+                
+                <div class="post-actions">
+                    <button class="action-btn neu-element like-btn" (click)="toggleLike('post3')">
+                        <span class="action-icon">❤️</span>
+                        <span class="action-label color-pink">Like</span>
+                    </button>
+                    <button class="action-btn neu-element" (click)="openComments('post3')">
+                        <span class="action-icon">💬</span>
+                        <span class="action-label color-blue">Comment</span>
+                    </button>
+                    <button class="action-btn neu-element">
+                        <span class="action-icon">🔄</span>
+                        <span class="action-label color-green">Share</span>
+                    </button>
+                    <button class="action-btn neu-element">
+                        <span class="action-icon">🔖</span>
+                        <span class="action-label color-orange">Save</span>
+                    </button>
+                </div>
+            </article>
+        </div>
     </div>
-  </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="suggestions-card neu-element">
+            <h3 class="card-title">Suggested For You</h3>
+            
+            <div class="suggestion-item">
+                <div class="user-avatar-small neu-element">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="User">
+                </div>
+                <div class="suggestion-info">
+                    <h4 class="suggestion-name color-saffron">Sarah Kim</h4>
+                    <span class="suggestion-meta">Photographer</span>
+                </div>
+                <button class="follow-btn neu-element">Follow</button>
+            </div>
+            
+            <div class="suggestion-item">
+                <div class="user-avatar-small neu-element">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150" alt="User">
+                </div>
+                <div class="suggestion-info">
+                    <h4 class="suggestion-name color-blue">James Wilson</h4>
+                    <span class="suggestion-meta">Travel Blogger</span>
+                </div>
+                <button class="follow-btn neu-element">Follow</button>
+            </div>
+
+            <div class="suggestion-item">
+                <div class="user-avatar-small neu-element">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" alt="User">
+                </div>
+                <div class="suggestion-info">
+                    <h4 class="suggestion-name color-peach">Lisa Anderson</h4>
+                    <span class="suggestion-meta">Fashion Designer</span>
+                </div>
+                <button class="follow-btn neu-element">Follow</button>
+            </div>
+        </div>
+        
+        <div class="trending-card neu-element">
+            <h3 class="card-title">Trending Topics</h3>
+            <div class="trending-topics">
+                <div class="topic-tag neu-element color-pink">#SummerVibes</div>
+                <div class="topic-tag neu-element color-blue">#TravelGoals</div>
+                <div class="topic-tag neu-element color-green">#Photography</div>
+                <div class="topic-tag neu-element color-orange">#FoodLover</div>
+                <div class="topic-tag neu-element color-saffron">#Inspiration</div>
+            </div>
+        </div>
+    </aside>
 </div>

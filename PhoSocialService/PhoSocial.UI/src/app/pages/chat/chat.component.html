@@ -1,25 +1,80 @@
 ﻿<audio id="msg-audio" src="/assets/NotificationSounds/MessageRecived.mp3" preload="auto" style="display:none"></audio>
-<div class="row">
-  <div class="col-4">
-    <app-user-list [users]="chatUsers" [selectedUserId]="selectedUserId" (selectUser)="onSelectUser($event)"></app-user-list>
-  </div>
-  <div class="col-8">
-    <div class="chat-card card p-4 mb-3 mx-auto" style="max-width:500px;">
-      <h5 class="mb-3">Chat</h5>
-      <div *ngIf="loading">Loading chat history...</div>
-      <div *ngIf="!loading">
-        <div class="mb-2 text-muted" *ngIf="selectedUserId">Chatting with: {{ receiverName }}</div>
-        <div class="mb-3" style="max-height:300px;overflow-y:auto;">
-          <div *ngFor="let m of messages" class="border rounded p-2 mb-2 bg-light">
-            <strong>{{ m.senderName }}</strong>: {{ m.content }}
-          </div>
-          <div *ngIf="!messages.length" class="text-muted">No messages yet.</div>
+
+<div class="messages-container">
+    <!-- Users List -->
+    <div class="chat-user-list">
+        <div class="chat-user-item neu-element">
+            <div class="user-avatar neu-element">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" alt="Alex">
+            </div>
+            <div style="flex: 1;">
+                <h4 class="user-name">Alex Chen</h4>
+                <p style="font-size: 0.85rem; color: #a3b1c6;">Hey, how are you?</p>
+            </div>
+            <span class="notification-badge">2</span>
         </div>
-        <div class="input-group">
-          <input [(ngModel)]="text" placeholder="Message..." class="form-control" />
-          <button (click)="send()" class="btn btn-primary" [disabled]="!text.trim() || !selectedUserId">Send</button>
+
+        <div class="chat-user-item neu-element">
+            <div class="user-avatar neu-element">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" alt="Emma">
+            </div>
+            <div style="flex: 1;">
+                <h4 class="user-name">Emma Rose</h4>
+                <p style="font-size: 0.85rem; color: #a3b1c6;">See you tomorrow!</p>
+            </div>
         </div>
-      </div>
+
+        <div class="chat-user-item neu-element">
+            <div class="user-avatar neu-element">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" alt="Mike">
+            </div>
+            <div style="flex: 1;">
+                <h4 class="user-name">Mike Taylor</h4>
+                <p style="font-size: 0.85rem; color: #a3b1c6;">Thanks for the info!</p>
+            </div>
+            <span class="notification-badge">1</span>
+        </div>
     </div>
-  </div>
-</div>
+
+    <!-- Chat Window -->
+    <div class="chat-window">
+        <div class="chat-header neu-element" style="margin-bottom: var(--spacing-md);">
+            <div class="post-user-info">
+                <div class="user-avatar neu-element">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" alt="Alex">
+                </div>
+                <div class="user-details">
+                    <h3 class="user-name color-blue">Alex Chen</h3>
+                    <span class="post-time">Active now</span>
+                </div>
+            </div>
+            <button class="post-menu-btn neu-element">⋯</button>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding: var(--spacing-md) 0;">
+            <div class="message-bubble received">
+                <span>Hey! How's your day going? 😊</span>
+            </div>
+            <div class="message-bubble received">
+                <span>I wanted to chat about our project</span>
+            </div>
+            <div class="message-bubble sent">
+                <span>Hi Alex! It's going great, thanks for asking! 🙌</span>
+            </div>
+            <div class="message-bubble sent">
+                <span>Sure, let's discuss the project details</span>
+            </div>
+            <div class="message-bubble received">
+                <span>Perfect! I have some ideas to share 💡</span>
+            </div>
+        </div>
+
+        <div style="padding: var(--spacing-md) 0; border-top: 1px solid rgba(163, 177, 198, 0.2);">
+            <div class="search-box neu-inset" style="margin: 0;">
+                <input type="text" placeholder="Type a message..." class="search-input" style="font-size: 1rem;">
+                <button class="neu-element" style="width: 44px; height: 44px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border-radius: var(--radius-full);">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>

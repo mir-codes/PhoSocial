@@ -1,22 +1,93 @@
-<div class="post-detail-card card p-4 mb-3 mx-auto" style="max-width:500px;">
-	<h5 class="mb-3">Post Details</h5>
-	<div *ngIf="loading">Loading...</div>
-	<div *ngIf="!loading && post">
-		<div class="fw-bold mb-1">{{ post.userName }}</div>
-		<div class="mb-2">{{ post.caption }}</div>
-		<img *ngIf="post.imagePath" [src]="'https://localhost:7095/' + post.imagePath" class="img-fluid rounded shadow-sm mb-2" style="max-height:300px;object-fit:cover;" />
-		<button class="btn btn-sm btn-outline-primary mb-2" (click)="like()">Like</button>
-		<!-- TODO: Show like count -->
-	</div>
-	<div *ngIf="!loading">
-		<h6>Comments</h6>
-		<div *ngFor="let c of comments" class="border rounded p-2 mb-2 bg-light">
-			<strong>{{ c.userName }}</strong>: {{ c.content }}
-		</div>
-		<div class="input-group mt-2">
-			<input [(ngModel)]="commentText" class="form-control" placeholder="Add a comment..." />
-			<button class="btn btn-success" (click)="addComment()">Comment</button>
-		</div>
-		<div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
-	</div>
+<div class="post-detail-container">
+  <div class="post-detail-card">
+    <div class="detail-header">
+      <h2 class="glow-text">Post Details</h2>
+      <button class="btn btn-sm btn-secondary" (click)="goBack()">
+        <i class="bi bi-chevron-left"></i> Back
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading post details...</p>
+    </div>
+
+    <div *ngIf="!loading && post" class="post-content">
+      <div class="post-header">
+        <div class="user-info">
+          <div class="avatar">{{ (post.userName || 'User').charAt(0).toUpperCase() }}</div>
+          <div>
+            <h4>{{ post.userName }}</h4>
+            <span class="post-date">{{ post.createdAt | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-caption" *ngIf="post.caption">
+        {{ post.caption }}
+      </div>
+
+      <div *ngIf="post.imagePath" class="post-image-container">
+        <img 
+          class="post-image" 
+          [src]="'https://localhost:7095/' + post.imagePath" 
+          alt="Post image"
+        />
+      </div>
+
+      <div class="post-actions">
+        <button 
+          class="action-btn like-btn" 
+          (click)="like()"
+          [class.active]="isLiked"
+        >
+          <i class="bi bi-heart"></i>
+          <span>Like ({{ post.likeCount || 0 }})</span>
+        </button>
+      </div>
+
+      <div class="comments-section">
+        <h4 class="comments-header">Comments ({{ comments.length }})</h4>
+
+        <div class="comments-list">
+          <div *ngIf="comments.length > 0; else noComments" class="comments-container">
+            <div *ngFor="let c of comments" class="comment-item">
+              <div class="comment-avatar">{{ (c.userName || 'U').charAt(0).toUpperCase() }}</div>
+              <div class="comment-content">
+                <div class="comment-header">
+                  <strong>{{ c.userName }}</strong>
+                  <span class="comment-date">{{ c.createdAt | date:'short' }}</span>
+                </div>
+                <p class="comment-text">{{ c.content }}</p>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noComments>
+            <div class="no-comments">
+              <i class="bi bi-chat-dots"></i>
+              <p>No comments yet. Be the first to comment!</p>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="add-comment-section">
+          <textarea 
+            [(ngModel)]="commentText"
+            placeholder="Add a comment..."
+            class="comment-input"
+            rows="3"
+          ></textarea>
+          <button 
+            class="btn btn-primary submit-comment-btn"
+            (click)="addComment()"
+            [disabled]="!commentText.trim()"
+          >
+            <i class="bi bi-chat-fill"></i> Post Comment
+          </button>
+          <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

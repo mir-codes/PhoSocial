@@ -1,17 +1,53 @@
-<div class="card p-4 mx-auto mt-5" style="max-width:400px">
-  <h3 class="mb-3">Sign Up</h3>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  <div class="mb-3">
-    <label>Username</label>
-    <input [(ngModel)]="userName" class="form-control" />
-  </div>
-  <div class="mb-3">
-    <label>Email</label>
-    <input [(ngModel)]="email" type="email" class="form-control" />
-  </div>
-  <div class="mb-3">
-    <label>Password</label>
-    <input [(ngModel)]="password" type="password" class="form-control" />
-  </div>
-  <button (click)="onSignup()" class="btn btn-success w-100">Sign Up</button>
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="logo-section">
+      <h1 class="glow-text">PhoSocial</h1>
+      <p class="subtitle">Join Our Community</p>
     </div>
+
+    <div *ngIf="error" class="alert alert-danger animate-pulse">
+      <i class="bi bi-exclamation-circle"></i> {{ error }}
+    </div>
+
+    <div class="form-group">
+      <label for="userName" class="form-label">Username</label>
+      <input 
+        id="userName"
+        [(ngModel)]="userName" 
+        class="form-control signup-input" 
+        placeholder="Choose a username"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email" class="form-label">Email Address</label>
+      <input 
+        id="email"
+        [(ngModel)]="email" 
+        type="email" 
+        class="form-control signup-input" 
+        placeholder="your@email.com"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="password" class="form-label">Password</label>
+      <input 
+        id="password"
+        [(ngModel)]="password" 
+        type="password" 
+        class="form-control signup-input" 
+        placeholder="••••••••"
+      />
+    </div>
+
+    <button (click)="onSignup()" class="btn btn-success w-100 signup-button animate-glow">
+      <span>Create Account</span>
+      <span class="button-glow"></span>
+    </button>
+
+    <div class="login-link">
+      <p>Already have an account? <a routerLink="/login">Sign in</a></p>
+    </div>
+  </div>
+</div>

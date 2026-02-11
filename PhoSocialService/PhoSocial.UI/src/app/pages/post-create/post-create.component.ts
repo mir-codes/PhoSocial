@@ -12,6 +12,7 @@ export class PostCreateComponent {
   image?: File;
   loading = false;
   error = '';
+  selectedFileName = '';
   @Output() posted = new EventEmitter<void>();
 
   constructor(private feed: FeedService) {}
@@ -19,6 +20,7 @@ export class PostCreateComponent {
   onFileChange(e: any) {
     if (e.target.files && e.target.files.length) {
       this.image = e.target.files[0];
+      this.selectedFileName = this.image.name;
     }
   }
 
@@ -32,6 +34,7 @@ export class PostCreateComponent {
       next: () => {
         this.caption = '';
         this.image = undefined;
+        this.selectedFileName = '';
         this.loading = false;
         this.error = '';
         this.posted.emit();
