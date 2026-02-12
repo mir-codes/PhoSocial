@@ -10,9 +10,9 @@ namespace PhoSocial.API.Repositories
     {
         Task CreatePostAsync(Post post);
         Task<IEnumerable<Post>> GetRecentPostsAsync(int take = 50);
-        Task<IEnumerable<Post>> GetUserPostsAsync(Guid userId, int page = 0, int pageSize = 10);
+        Task<IEnumerable<Post>> GetUserPostsAsync(long userId, int page = 0, int pageSize = 10);
         Task CreateLikeAsync(Like like);
-        Task RemoveLikeAsync(Guid postId, Guid userId);
+        Task RemoveLikeAsync(long postId, long userId);
         Task CreateCommentAsync(Comment comment);
     }
 
@@ -35,7 +35,7 @@ namespace PhoSocial.API.Repositories
             return await conn.QueryAsync<Post>(sql, new { Take = take });
         }
 
-        public async Task<IEnumerable<Post>> GetUserPostsAsync(Guid userId, int page = 0, int pageSize = 10)
+        public async Task<IEnumerable<Post>> GetUserPostsAsync(long userId, int page = 0, int pageSize = 10)
         {
             using var conn = _db.CreateConnection();
             var sql = @"
@@ -55,7 +55,7 @@ namespace PhoSocial.API.Repositories
             await conn.ExecuteAsync(sql, like);
         }
 
-        public async Task RemoveLikeAsync(Guid postId, Guid userId)
+        public async Task RemoveLikeAsync(long postId, long userId)
         {
             using var conn = _db.CreateConnection();
             var sql = "DELETE FROM Likes WHERE PostId = @PostId AND UserId = @UserId";

@@ -12,7 +12,7 @@ namespace PhoSocial.API.DTOs
 
     public class ProfileDto
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Username { get; set; }
         public string DisplayName { get; set; }
         public string Bio { get; set; }

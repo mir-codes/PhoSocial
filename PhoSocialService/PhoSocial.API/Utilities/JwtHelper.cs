@@ -9,7 +9,7 @@ namespace PhoSocial.API.Utilities
 {
     public static class JwtHelper
     {
-        public static string GenerateToken(IConfiguration config, string userId, string email, string username)
+        public static string GenerateToken(IConfiguration config, long userId, string email, string username)
         {
             var jwtSection = config.GetSection("Jwt");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSection["Key"]));
@@ -17,7 +17,7 @@ namespace PhoSocial.API.Utilities
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
-                new Claim("id", userId),
+                new Claim("id", userId.ToString()),
                 new Claim(ClaimTypes.Name, username)
             };
 

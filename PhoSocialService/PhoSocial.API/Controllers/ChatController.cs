@@ -15,18 +15,18 @@ namespace PhoSocial.API.Controllers
         public ChatController(IChatRepository chatRepo) { _chatRepo = chatRepo; }
 
         [HttpGet("history/{withUserId}")]
-        public async Task<IActionResult> GetHistory(string withUserId)
+        public async Task<IActionResult> GetHistory(long withUserId)
         {
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
-            var conv = await _chatRepo.GetConversationAsync(Guid.Parse(userId), Guid.Parse(withUserId));
+            var conv = await _chatRepo.GetConversationAsync(long.Parse(userId), withUserId);
             return Ok(conv);
         }
 
         [HttpPost("mark-read/{messageId}")]
-        public async Task<IActionResult> MarkRead(string messageId)
+        public async Task<IActionResult> MarkRead(long messageId)
         {
-            await _chatRepo.MarkMessageReadAsync(Guid.Parse(messageId));
+            await _chatRepo.MarkMessageReadAsync(messageId);
             return Ok();
         }
     }

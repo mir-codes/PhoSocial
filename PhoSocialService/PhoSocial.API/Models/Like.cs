@@ -4,8 +4,8 @@ namespace PhoSocial.API.Models
 {
     public class Like
     {
-        public Guid Id {get; set;}
-        public Guid PostId {get; set;}
-        public Guid UserId {get; set;}
+        public long Id {get; set;}
+        public long PostId {get; set;}
+        public long UserId {get; set;}
     }
 }

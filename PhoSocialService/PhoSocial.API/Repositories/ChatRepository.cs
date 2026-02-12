@@ -9,9 +9,9 @@ namespace PhoSocial.API.Repositories
     public interface IChatRepository
     {
         Task CreateMessageAsync(Message message);
-        Task<Message> GetMessageByIdAsync(Guid id);
-        Task<IEnumerable<Message>> GetConversationAsync(Guid userA, Guid userB, int take = 50);
-        Task MarkMessageReadAsync(Guid id);
+        Task<Message> GetMessageByIdAsync(long id);
+        Task<IEnumerable<Message>> GetConversationAsync(long userA, long userB, int take = 50);
+        Task MarkMessageReadAsync(long id);
     }
 
     public class ChatRepository : IChatRepository
@@ -26,14 +26,14 @@ namespace PhoSocial.API.Repositories
             await conn.ExecuteAsync(sql, message);
         }
 
-        public async Task<Message> GetMessageByIdAsync(Guid id)
+        public async Task<Message> GetMessageByIdAsync(long id)
         {
             using var conn = _db.CreateConnection();
             var sql = "SELECT * FROM Messages WHERE Id = @Id";
             return await conn.QueryFirstOrDefaultAsync<Message>(sql, new { Id = id });
         }
 
-        public async Task<IEnumerable<Message>> GetConversationAsync(Guid userA, Guid userB, int take = 50)
+        public async Task<IEnumerable<Message>> GetConversationAsync(long userA, long userB, int take = 50)
         {
             using var conn = _db.CreateConnection();
             var sql = @"SELECT TOP (@Take) * FROM Messages
@@ -42,7 +42,7 @@ namespace PhoSocial.API.Repositories
             return await conn.QueryAsync<Message>(sql, new { A = userA, B = userB, Take = take });
         }
 
-        public async Task MarkMessageReadAsync(Guid id)
+        public async Task MarkMessageReadAsync(long id)
         {
             using var conn = _db.CreateConnection();
             var sql = "UPDATE Messages SET Status = 'Read' WHERE Id = @Id";

@@ -41,7 +41,6 @@ namespace PhoSocial.API.Controllers
 
             var post = new Post
             {
-                Id = Guid.NewGuid(),
                 UserId = dto.UserId,
                 Caption = dto.Caption,
                 ImagePath = savedPath ?? string.Empty,
@@ -61,29 +60,29 @@ namespace PhoSocial.API.Controllers
         }
 
         [HttpPost("like/{postId}")]
-        public async Task<IActionResult> Like(Guid postId)
+        public async Task<IActionResult> Like(long postId)
         {
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
-            await _feed.CreateLikeAsync(new Like { Id = Guid.NewGuid(), PostId = postId, UserId = Guid.Parse(userId) });
+            await _feed.CreateLikeAsync(new Like { PostId = postId, UserId = long.Parse(userId) });
             return Ok();
         }
 
         [HttpPost("unlike/{postId}")]
-        public async Task<IActionResult> Unlike(Guid postId)
+        public async Task<IActionResult> Unlike(long postId)
         {
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
-            await _feed.RemoveLikeAsync(postId, Guid.Parse(userId));
+            await _feed.RemoveLikeAsync(postId, long.Parse(userId));
             return Ok();
         }
 
         [HttpPost("comment/{postId}")]
-        public async Task<IActionResult> Comment(Guid postId, [FromBody] string content)
+        public async Task<IActionResult> Comment(long postId, [FromBody] string content)
         {
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
-            var comment = new Comment { Id = Guid.NewGuid(), PostId = postId, UserId = Guid.Parse(userId), Content = content, CreatedAt = DateTime.UtcNow };
+            var comment = new Comment { PostId = postId, UserId = long.Parse(userId), Content = content, CreatedAt = DateTime.UtcNow };
             await _feed.CreateCommentAsync(comment);
             return Ok(comment);
         }

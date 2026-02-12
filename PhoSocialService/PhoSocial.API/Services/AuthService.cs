@@ -29,9 +29,9 @@ namespace PhoSocial.API.Services
             var existing = await _users.GetByEmailAsync(dto.Email);
             if (existing != null) throw new Exception("Email already exists");
             var hashed = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-            var user = new User { Id = Guid.NewGuid(), UserName = dto.UserName, Email = dto.Email, PasswordHash = hashed, CreatedAt = DateTime.UtcNow };
+            var user = new User { UserName = dto.UserName, Email = dto.Email, PasswordHash = hashed, CreatedAt = DateTime.UtcNow };
             await _users.CreateAsync(user);
-            return JwtHelper.GenerateToken(_config, user.Id.ToString(), user.Email, user.UserName);
+            return JwtHelper.GenerateToken(_config, user.Id, user.Email, user.UserName);
         }
 
         public async Task<string> LoginAsync(LoginDto dto)
@@ -41,7 +41,7 @@ namespace PhoSocial.API.Services
 
             var user = await _users.GetByEmailAsync(email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash)) throw new Exception("Invalid credentials");
-            return JwtHelper.GenerateToken(_config, user.Id.ToString(), user.Email, user.UserName);
+            return JwtHelper.GenerateToken(_config, user.Id, user.Email, user.UserName);
         }
     }
 }

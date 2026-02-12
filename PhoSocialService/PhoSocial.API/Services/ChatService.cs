@@ -7,9 +7,9 @@ namespace PhoSocial.API.Services
 {
     public interface IChatService
     {
-        Task<Message> CreateMessageAsync(string senderId, string receiverId, string content);
-        Task<Message> GetMessageByIdAsync(string messageId);
-        Task MarkMessageReadAsync(string messageId);
+        Task<Message> CreateMessageAsync(long senderId, long receiverId, string content);
+        Task<Message> GetMessageByIdAsync(long messageId);
+        Task MarkMessageReadAsync(long messageId);
     }
 
     public class ChatService : IChatService
@@ -18,15 +18,13 @@ namespace PhoSocial.API.Services
         private readonly IUserRepository _userRepo;
         public ChatService(IChatRepository repo, IUserRepository userRepo) { _repo = repo; _userRepo = userRepo; }
 
-        public async Task<Message> CreateMessageAsync(string senderId, string receiverId, string content)
+        public async Task<Message> CreateMessageAsync(long senderId, long receiverId, string content)
         {
-            var senderGuid = Guid.Parse(senderId);
-            var sender = await _userRepo.GetByIdAsync(senderGuid);
+            var sender = await _userRepo.GetByIdAsync(senderId);
             var msg = new Message
             {
-                Id = Guid.NewGuid(),
-                SenderId = senderGuid,
-                ReceiverId = Guid.Parse(receiverId),
+                SenderId = senderId,
+                ReceiverId = receiverId,
                 Content = content,
                 Status = "Sent",
                 CreatedAt = DateTime.UtcNow,
@@ -36,16 +34,13 @@ namespace PhoSocial.API.Services
             return msg;
         }
 
-        public async Task<Message> GetMessageByIdAsync(string messageId)
+        public async Task<Message> GetMessageByIdAsync(long messageId)
         {
-            var id = Guid.Parse(messageId);
-            return await _repo.GetMessageByIdAsync(id);
+            return await _repo.GetMessageByIdAsync(messageId);
         }
 
-        public async Task MarkMessageReadAsync(string messageId)
+        public async Task MarkMessageReadAsync(long messageId)
         {
-            var id = Guid.Parse(messageId);
-            await _repo.MarkMessageReadAsync(id);
-        }
+            await _repo.MarkMessageReadAsync(messageId);        }
     }
 }

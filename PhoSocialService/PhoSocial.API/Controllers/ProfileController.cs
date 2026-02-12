@@ -23,7 +23,7 @@ namespace PhoSocial.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProfile(Guid id)
+        public async Task<IActionResult> GetProfile(long id)
         {
             var profile = await _userRepository.GetProfileAsync(id);
             if (profile == null) return NotFound();
@@ -52,13 +52,13 @@ namespace PhoSocial.API.Controllers
                 profileImagePath = Path.Combine("uploads", "profiles", fileName).Replace("\\", "/");
             }
 
-            var success = await _userRepository.UpdateProfileAsync(Guid.Parse(userId), dto, profileImagePath);
+            var success = await _userRepository.UpdateProfileAsync(long.Parse(userId), dto, profileImagePath);
             if (!success) return BadRequest();
             return Ok();
         }
 
         [HttpGet("{id}/posts")]
-        public async Task<IActionResult> GetUserPosts(Guid id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetUserPosts(long id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var posts = await _feedRepository.GetUserPostsAsync(id, page, pageSize);
             return Ok(posts);
@@ -70,7 +70,7 @@ namespace PhoSocial.API.Controllers
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
             
-            var following = await _userRepository.GetFollowingAsync(Guid.Parse(userId), page, pageSize);
+            var following = await _userRepository.GetFollowingAsync(long.Parse(userId), page, pageSize);
             return Ok(following);
         }
 
@@ -80,28 +80,28 @@ namespace PhoSocial.API.Controllers
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
             
-            var followers = await _userRepository.GetFollowersAsync(Guid.Parse(userId), page, pageSize);
+            var followers = await _userRepository.GetFollowersAsync(long.Parse(userId), page, pageSize);
             return Ok(followers);
         }
 
         [HttpPost("follow/{id}")]
-        public async Task<IActionResult> Follow(Guid id)
+        public async Task<IActionResult> Follow(long id)
         {
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
             
-            var success = await _userRepository.FollowUserAsync(Guid.Parse(userId), id);
+            var success = await _userRepository.FollowUserAsync(long.Parse(userId), id);
             if (!success) return BadRequest();
             return Ok();
         }
 
         [HttpPost("unfollow/{id}")]
-        public async Task<IActionResult> Unfollow(Guid id)
+        public async Task<IActionResult> Unfollow(long id)
         {
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
             
-            var success = await _userRepository.UnfollowUserAsync(Guid.Parse(userId), id);
+            var success = await _userRepository.UnfollowUserAsync(long.Parse(userId), id);
             if (!success) return BadRequest();
             return Ok();
         }

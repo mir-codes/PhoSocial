@@ -19,7 +19,7 @@ namespace PhoSocial.API.Repositories
             return await conn.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
         }
 
-        public async Task<User> GetByIdAsync(Guid id)
+        public async Task<User> GetByIdAsync(long id)
         {
             using var conn = _db.CreateConnection();
             var sql = "SELECT * FROM Users WHERE Id = @Id";
@@ -29,7 +29,7 @@ namespace PhoSocial.API.Repositories
         public async Task CreateAsync(User user)
         {
             using var conn = _db.CreateConnection();
-            var sql = "INSERT INTO Users (Id, UserName, Email, PasswordHash, CreatedAt) VALUES (@Id,@UserName,@Email,@PasswordHash,@CreatedAt)";
+            var sql = "INSERT INTO Users (UserName, Email, PasswordHash, CreatedAt) VALUES (@UserName,@Email,@PasswordHash,@CreatedAt)";
             await conn.ExecuteAsync(sql, user);
         }
 
@@ -50,7 +50,7 @@ namespace PhoSocial.API.Repositories
             return await conn.QueryAsync<ProfileDto>(sql, new { Q = "%" + q + "%" });
         }
 
-        public async Task<ProfileDto?> GetProfileAsync(Guid userId)
+        public async Task<ProfileDto?> GetProfileAsync(long userId)
         {
             using var conn = _db.CreateConnection();
             var sql = @"
@@ -65,7 +65,7 @@ namespace PhoSocial.API.Repositories
             return await conn.QueryFirstOrDefaultAsync<ProfileDto>(sql, new { UserId = userId });
         }
 
-        public async Task<bool> UpdateProfileAsync(Guid userId, ProfileUpdateDto dto, string? profileImagePath)
+        public async Task<bool> UpdateProfileAsync(long userId, ProfileUpdateDto dto, string? profileImagePath)
         {
             using var conn = _db.CreateConnection();
             var sql = @"
@@ -88,7 +88,7 @@ namespace PhoSocial.API.Repositories
             return rowsAffected > 0;
         }
 
-        public async Task<IEnumerable<ProfileDto>> GetFollowersAsync(Guid userId, int page, int pageSize)
+        public async Task<IEnumerable<ProfileDto>> GetFollowersAsync(long userId, int page, int pageSize)
         {
             using var conn = _db.CreateConnection();
             var sql = @"
@@ -110,7 +110,7 @@ namespace PhoSocial.API.Repositories
             });
         }
 
-        public async Task<IEnumerable<ProfileDto>> GetFollowingAsync(Guid userId, int page, int pageSize)
+        public async Task<IEnumerable<ProfileDto>> GetFollowingAsync(long userId, int page, int pageSize)
         {
             using var conn = _db.CreateConnection();
             var sql = @"
@@ -132,7 +132,7 @@ namespace PhoSocial.API.Repositories
             });
         }
 
-        public async Task<bool> FollowUserAsync(Guid followerId, Guid followingId)
+        public async Task<bool> FollowUserAsync(long followerId, long followingId)
         {
             using var conn = _db.CreateConnection();
             try
@@ -150,7 +150,7 @@ namespace PhoSocial.API.Repositories
             }
         }
 
-        public async Task<bool> UnfollowUserAsync(Guid followerId, Guid followingId)
+        public async Task<bool> UnfollowUserAsync(long followerId, long followingId)
         {
             using var conn = _db.CreateConnection();
             var sql = @"
