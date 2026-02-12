@@ -5,7 +5,9 @@ using PhoSocial.API.Hubs;
 using PhoSocial.API.Repositories;
 using PhoSocial.API.Services;
 using PhoSocial.API.Middleware;
+using PhoSocial.API.Utilities;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.SignalR;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,10 +15,14 @@ var config = builder.Configuration;
 
 // Add services
 builder.Services.AddControllers();
+
+// Configure SignalR with custom user ID provider
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
 // DI - DB factory & repositories & services
 builder.Services.AddSingleton<IDbConnectionFactory, SqlDbConnectionFactory>();
+builder.Services.AddSingleton<ISanitizationService, HtmlSanitizationService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IFeedRepository, FeedRepository>();
@@ -106,6 +112,26 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
+
+// Add rate limiting for auth endpoints (5 attempts per minute per IP)
+builder.Services.AddMemoryCache();
+builder.Services.AddInMemoryRateLimiting();
+builder.Services.Configure<IpRateLimitOptions>(options =>
+{
+    options.GeneralRules = new List<RateLimitRule>
+    {
+        new RateLimitRule
+        {
+            Endpoint = "*:/api/auth/*",
+            Period = "1m",
+            Limit = 5
+        }
+    };
+});
+builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularClient",
@@ -124,6 +150,7 @@ builder.Services.AddHostedService<PhoSocial.API.HostedServices.ExpireStoriesServ
 var app = builder.Build();
 
 app.UseStaticFiles();
+app.UseIpRateLimiting();
 app.UseRouting();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors("AllowAngularClient");

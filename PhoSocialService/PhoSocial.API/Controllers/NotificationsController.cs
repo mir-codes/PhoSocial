@@ -25,7 +25,7 @@ namespace PhoSocial.API.Controllers
             if (userId == null) return Unauthorized();
             
             var notifications = await _notifications.GetNotificationsAsync(
-                Guid.Parse(userId),
+                long.Parse(userId),
                 page,
                 pageSize
             );
@@ -38,17 +38,17 @@ namespace PhoSocial.API.Controllers
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
             
-            var count = await _notifications.GetUnreadCountAsync(Guid.Parse(userId));
+            var count = await _notifications.GetUnreadCountAsync(long.Parse(userId));
             return Ok(new { count });
         }
 
         [HttpPut("{id}/read")]
-        public async Task<IActionResult> MarkAsRead(Guid id)
+        public async Task<IActionResult> MarkAsRead(long id)
         {
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
             
-            var success = await _notifications.MarkAsReadAsync(id, Guid.Parse(userId));
+            var success = await _notifications.MarkAsReadAsync(id, long.Parse(userId));
             if (!success) return BadRequest();
             return Ok();
         }
@@ -59,7 +59,7 @@ namespace PhoSocial.API.Controllers
             var userId = User?.FindFirst("id")?.Value;
             if (userId == null) return Unauthorized();
             
-            await _notifications.MarkAllAsReadAsync(Guid.Parse(userId));
+            await _notifications.MarkAllAsReadAsync(long.Parse(userId));
             return Ok();
         }
     }

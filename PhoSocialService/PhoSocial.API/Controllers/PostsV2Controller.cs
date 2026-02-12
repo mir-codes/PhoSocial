@@ -25,9 +25,12 @@ namespace PhoSocial.API.Controllers
         }
 
         [HttpGet("feed")]
-        public async Task<IActionResult> GetFeed([FromQuery] long userId, [FromQuery] int offset = 0, [FromQuery] int pageSize = 20)
+        [Authorize]
+        public async Task<IActionResult> GetFeed([FromQuery] int offset = 0, [FromQuery] int pageSize = 20)
         {
-            var items = await _service.GetFeedAsync(userId, offset, pageSize);
+            var userId = User.GetUserIdLong();
+            if (userId == null) return Unauthorized();
+            var items = await _service.GetFeedAsync(userId.Value, offset, pageSize);
             return Ok(items);
         }
 
