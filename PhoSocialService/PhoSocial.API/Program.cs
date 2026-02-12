@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using PhoSocial.API.Hubs;
 using PhoSocial.API.Repositories;
 using PhoSocial.API.Services;
+using PhoSocial.API.Middleware;
 using Microsoft.OpenApi.Models;
 
 
@@ -21,6 +22,15 @@ builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IFeedRepository, FeedRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IChatService, ChatService>();
+// New v2 repositories and services (Dapper -> Stored Procedures / optimized schema)
+builder.Services.AddScoped<PhoSocial.API.Repositories.V2.IPostRepositoryV2, PhoSocial.API.Repositories.V2.PostRepositoryV2>();
+builder.Services.AddScoped<PhoSocial.API.Services.IPostServiceV2, PhoSocial.API.Services.PostServiceV2>();
+// Register v2 chat
+builder.Services.AddScoped<PhoSocial.API.Repositories.V2.IChatRepositoryV2, PhoSocial.API.Repositories.V2.ChatRepositoryV2>();
+builder.Services.AddScoped<PhoSocial.API.Services.IChatServiceV2, PhoSocial.API.Services.ChatServiceV2>();
+// Register v2 profile
+builder.Services.AddScoped<PhoSocial.API.Repositories.V2.IProfileRepositoryV2, PhoSocial.API.Repositories.V2.ProfileRepositoryV2>();
+builder.Services.AddScoped<PhoSocial.API.Services.IProfileServiceV2, PhoSocial.API.Services.ProfileServiceV2>();
 // Add Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -108,10 +118,14 @@ builder.Services.AddCors(options =>
         });
 });
 
+// Hosted services
+builder.Services.AddHostedService<PhoSocial.API.HostedServices.ExpireStoriesService>();
+
 var app = builder.Build();
 
 app.UseStaticFiles();
 app.UseRouting();
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors("AllowAngularClient");
 app.UseAuthentication();
 app.UseAuthorization();

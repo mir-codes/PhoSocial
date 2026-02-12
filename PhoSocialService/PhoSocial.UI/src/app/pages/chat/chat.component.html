@@ -3,36 +3,15 @@
 <div class="messages-container">
     <!-- Users List -->
     <div class="chat-user-list">
-        <div class="chat-user-item neu-element">
+        <div *ngFor="let u of chatUsers" class="chat-user-item neu-element" (click)="openConversationWithUser(u.otherUserId ?? u.id)">
             <div class="user-avatar neu-element">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" alt="Alex">
+                <img [src]="u.otherProfileImageUrl || u.profileImageUrl || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150'" alt="user">
             </div>
             <div style="flex: 1;">
-                <h4 class="user-name">Alex Chen</h4>
-                <p style="font-size: 0.85rem; color: #a3b1c6;">Hey, how are you?</p>
+                <h4 class="user-name">{{ u.otherUsername || u.username || u.name || u.id }}</h4>
+                <p style="font-size: 0.85rem; color: #a3b1c6;">{{ u.lastMessage || '' }}</p>
             </div>
-            <span class="notification-badge">2</span>
-        </div>
-
-        <div class="chat-user-item neu-element">
-            <div class="user-avatar neu-element">
-                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" alt="Emma">
-            </div>
-            <div style="flex: 1;">
-                <h4 class="user-name">Emma Rose</h4>
-                <p style="font-size: 0.85rem; color: #a3b1c6;">See you tomorrow!</p>
-            </div>
-        </div>
-
-        <div class="chat-user-item neu-element">
-            <div class="user-avatar neu-element">
-                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" alt="Mike">
-            </div>
-            <div style="flex: 1;">
-                <h4 class="user-name">Mike Taylor</h4>
-                <p style="font-size: 0.85rem; color: #a3b1c6;">Thanks for the info!</p>
-            </div>
-            <span class="notification-badge">1</span>
+            <span *ngIf="u.unread" class="notification-badge">{{ u.unread }}</span>
         </div>
     </div>
 
@@ -51,28 +30,18 @@
             <button class="post-menu-btn neu-element">⋯</button>
         </div>
 
-        <div style="flex: 1; overflow-y: auto; padding: var(--spacing-md) 0;">
-            <div class="message-bubble received">
-                <span>Hey! How's your day going? 😊</span>
-            </div>
-            <div class="message-bubble received">
-                <span>I wanted to chat about our project</span>
-            </div>
-            <div class="message-bubble sent">
-                <span>Hi Alex! It's going great, thanks for asking! 🙌</span>
-            </div>
-            <div class="message-bubble sent">
-                <span>Sure, let's discuss the project details</span>
-            </div>
-            <div class="message-bubble received">
-                <span>Perfect! I have some ideas to share 💡</span>
+        <div #messagesContainer style="flex: 1; overflow-y: auto; padding: var(--spacing-md) 0;" (scroll)="onMessagesScroll($event)">
+            <div *ngIf="loadingMore" style="text-align:center; padding:8px;">Loading...</div>
+            <div *ngFor="let m of messages.slice().reverse()" [ngClass]="{'message-bubble': true, 'sent': m.senderId == auth.getUserIdFromToken(), 'received': m.senderId != auth.getUserIdFromToken()}">
+                <span>{{ m.messageText || m.content }}</span>
+                <div class="message-meta">{{ m.createdAt | date:'short' }}</div>
             </div>
         </div>
 
         <div style="padding: var(--spacing-md) 0; border-top: 1px solid rgba(163, 177, 198, 0.2);">
-            <div class="search-box neu-inset" style="margin: 0;">
-                <input type="text" placeholder="Type a message..." class="search-input" style="font-size: 1rem;">
-                <button class="neu-element" style="width: 44px; height: 44px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border-radius: var(--radius-full);">
+            <div class="search-box neu-inset" style="margin: 0; display:flex; gap:8px; align-items:center;">
+                <input [(ngModel)]="text" (keydown.enter)="send()" type="text" placeholder="Type a message..." class="search-input" style="font-size: 1rem; flex:1;">
+                <button (click)="send()" class="neu-element" style="width: 44px; height: 44px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border-radius: var(--radius-full);">
                     ➤
                 </button>
             </div>

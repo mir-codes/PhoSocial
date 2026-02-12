@@ -3,56 +3,50 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Authorization;
 using PhoSocial.API.Services;
 using PhoSocial.API.Models;
+using PhoSocial.API.Utilities;
 
 namespace PhoSocial.API.Hubs
 {
     [Authorize]
     public class ChatHub : Hub
     {
-        private readonly IChatService _chatService;
-        public ChatHub(IChatService chatService)
+        private readonly IChatServiceV2 _chatService;
+        public ChatHub(IChatServiceV2 chatService)
         {
             _chatService = chatService;
         }
 
-        private string GetUserId()
-        {
-            var id = Context.User?.FindFirst("id")?.Value;
-            return id;
-        }
-
         public override Task OnConnectedAsync()
         {
-            // Optionally, map connection Id to user in memory/store for multi-client support
             return base.OnConnectedAsync();
         }
 
-        public async Task SendMessage(string receiverId, string message)
+        // Send a message to a user: create/get conversation, persist message, notify both participants
+        public async Task SendMessage(long otherUserId, string message)
         {
-            var senderId = GetUserId();
-            if (string.IsNullOrEmpty(senderId)) return;
-            var msg = await _chatService.CreateMessageAsync(senderId, receiverId, message);
-            // Send to receiver (Clients.User expects claim NameIdentifier, but we use custom 'id' claim;
-            // SignalR's default user id provider uses ClaimTypes.NameIdentifier, some setups may require custom IUserIdProvider)
-            await Clients.User(receiverId).SendAsync("ReceiveMessage", msg);
+            var me = Context.User.GetUserIdLong();
+            if (me == null) return;
+            var convId = await _chatService.GetOrCreateConversationAsync(me.Value, otherUserId);
+            var msg = await _chatService.SendMessageAsync(convId, me.Value, message);
+
+            // Notify recipient and sender
+            await Clients.User(otherUserId.ToString()).SendAsync("ReceiveMessage", msg);
             await Clients.Caller.SendAsync("MessageSent", msg);
         }
 
-        public async Task Typing(string receiverId)
+        // Typing indicator
+        public async Task Typing(long otherUserId)
         {
-            var senderId = GetUserId();
-            if (string.IsNullOrEmpty(senderId)) return;
-            await Clients.User(receiverId).SendAsync("UserTyping", senderId);
+            var me = Context.User.GetUserIdLong();
+            if (me == null) return;
+            await Clients.User(otherUserId.ToString()).SendAsync("UserTyping", new { UserId = me.Value });
         }
 
-        public async Task MarkRead(string messageId)
+        public async Task MarkRead(long messageId)
         {
             await _chatService.MarkMessageReadAsync(messageId);
-            var msg = await _chatService.GetMessageByIdAsync(messageId);
-            if (msg != null)
-            {
-                await Clients.User(msg.SenderId.ToString()).SendAsync("MessageRead", messageId);
-            }
+            // Optionally, notify sender that message was read
+            // We don't have sender id here; client can manage acknowledgement
         }
     }
 }
